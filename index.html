@@ -55,10 +55,14 @@
 
     .buttons {
         position: relative;
-        width: 320px;
-        height: 180px;
-        margin: 40px auto;
+        height: 160px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
     }
+
 
     button {
         padding: 12px 24px;
@@ -79,17 +83,19 @@
     }
 
     #noBtn {
-        position: absolute;
-        background-color: #6c757d;
+        background: #6c757d;
         color: white;
+    }
+
+    #success {
+        display: none;
+        animation: pop 0.6s ease forwards;
     }
 
     .message {
         font-size: 1.8rem;
         color: white;
         margin-top: 20px;
-        display: none;
-        animation: pop 0.6s ease forwards;
     }
 
     @keyframes pop {
@@ -126,20 +132,26 @@
         <button id="noBtn">No 😢</button>
     </div>
 
-    <div class="message" id="message">
-        YAY!!! I knew you'd say yes! 💕🥰
+    <div id="success">
+        <img src="images/valentine_otter.png" style="width: 200px;">
+        <div class="message" id="message">
+            YAY!!! I knew you'd say yes! 💕🥰
+        </div>
     </div>
 </div>
 
 <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
-    const message = document.getElementById("message");
+    const success = document.getElementById("success");
     const container = document.querySelector(".buttons");
 
     let yesScale = 1;
 
     function moveNoButton() {
+        // On first escape, remove from flex layout
+        noBtn.style.position = "absolute";
+
         const maxX = container.clientWidth - noBtn.offsetWidth;
         const maxY = container.clientHeight - noBtn.offsetHeight;
 
@@ -149,18 +161,17 @@
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
 
-        // Grow Yes button slightly each time
         yesScale += 0.05;
         yesBtn.style.transform = `scale(${yesScale})`;
     }
 
-    moveNoButton();
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
 
     yesBtn.addEventListener("click", () => {
-        message.style.display = "block";
+        success.style.display = "block";
+        container.style.display = "none";
         createConfetti();
     });
 
